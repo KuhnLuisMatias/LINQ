@@ -13,16 +13,18 @@ namespace LINQ.STANDARD_QUERY_OPERATORS
         {
             var query = from r in Formula1.GetChampions()
                         let numberYears = r.Years.Count()
-                        where numberYears >= 3
-                        orderby numberYears descending, r.LastName
+                        where numberYears == 1
+                        orderby numberYears descending, r.FirstName
                         select new
                         {
-                            Name = r.FirstName + " " + r.LastName,
-                            TimesChampion = numberYears
+                            Pais = r.Country,
+                            Ganados = r.Wins,
+                            Nombre = r.FirstName + " " + r.LastName,
+                            VecesCampeon = numberYears
                         };
             foreach (var r in query)
             {
-                Console.WriteLine($"{r.Name} {r.TimesChampion}");
+                Console.WriteLine($"Pais: {r.Pais} Nombre:{r.Nombre} Veces Campeon:{r.VecesCampeon} Ganados: {r.Ganados}");
             }
         }
         public static void AggregateSum()
@@ -33,11 +35,10 @@ namespace LINQ.STANDARD_QUERY_OPERATORS
                             select new
                             {
                                 Country = c.Key,
-                                Wins = (from r1 in c
-                                        select r1.Wins).Sum()
+                                Wins = (from r1 in c select r1.Wins).Sum()
                             }
-                             orderby c.Wins descending, c.Country
-                             select c).Take(5);
+                             orderby c.Wins descending, c.Country select c).Take(5);
+
             foreach (var country in countries)
             {
                 Console.WriteLine($"{country.Country} {country.Wins}");
